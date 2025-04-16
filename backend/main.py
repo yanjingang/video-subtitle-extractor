@@ -2,7 +2,7 @@
 """
 @Author  : Fang Yao
 @Time    : 2021/3/24 9:28 上午
-@FileName: main.py
+@FileName: main.py --video_path=/xxx/xxx.mp4 --subtitle_area=926,1080,96,1824
 @desc: 主程序入口文件
 """
 import os
@@ -1006,12 +1006,16 @@ class SubtitleExtractor:
 
 if __name__ == '__main__':
     multiprocessing.set_start_method("spawn")
+    importlib.reload(config)
+    args = utility.parse_args()
+
     # 提示用户输入视频路径
-    video_path = input(f"{config.interface_config['Main']['InputVideo']}").strip()
+    # video_path = input(f"{config.interface_config['Main']['InputVideo']}").strip()
+    video_path = args.video_path
     # 提示用户输入字幕区域
     try:
-        y_min, y_max, x_min, x_max = map(int, input(
-            f"{config.interface_config['Main']['ChooseSubArea']} (ymin ymax xmin xmax)：").split())
+        # y_min, y_max, x_min, x_max = map(int, input(f"{config.interface_config['Main']['ChooseSubArea']} (ymin ymax xmin xmax)：").split())
+        y_min, y_max, x_min, x_max = map(int, args.subtitle_area)
         subtitle_area = (y_min, y_max, x_min, x_max)
     except ValueError as e:
         subtitle_area = None

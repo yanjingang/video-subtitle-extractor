@@ -32,6 +32,9 @@ def str2bool(v):
 
 def init_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--video_path", type=str)
+    parser.add_argument("--subtitle_area", type=str, default='926,1080,96,1824')
+
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
