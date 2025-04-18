@@ -34,6 +34,9 @@ def init_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--video_path", type=str)
     parser.add_argument("--subtitle_area", type=str, default='926,1080,96,1824')
+    parser.add_argument("--filter_watermark", type=str, default="n")
+    parser.add_argument("--delete_subarea", type=str, default="n")
+    parser.add_argument("--delete_no_subarea", type=str, default="n")
 
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)

@@ -2,7 +2,7 @@
 """
 @Author  : Fang Yao
 @Time    : 2021/3/24 9:28 上午
-@FileName: main.py --video_path=/xxx/xxx.mp4 --subtitle_area=926,1080,96,1824
+@FileName: main.py --video_path=/xxx/xxx.mp4 --subtitle_area=926,1080,96,1824 --filter_watermark=n --delete_subarea=n --delete_no_subarea=n
 @desc: 主程序入口文件
 """
 import os
@@ -162,8 +162,9 @@ class SubtitleExtractor:
         if self.sub_area is None:
             print(config.interface_config['Main']['StartDetectWaterMark'])
             # 询问用户视频是否有水印区域
-            user_input = input(config.interface_config['Main']['checkWaterMark']).strip()
-            if user_input == 'y':
+            # user_input = input(config.interface_config['Main']['checkWaterMark']).strip()
+            # if user_input == 'y':
+            if args.filter_watermark == 'y':
                 self.filter_watermark()
                 print(config.interface_config['Main']['FinishDetectWaterMark'])
             else:
@@ -502,9 +503,10 @@ class SubtitleExtractor:
 
         area_num = ['E', 'D', 'C', 'B', 'A']
         for watermark_area in watermark_areas:
-            user_input = input(f"{area_num.pop()}{str(watermark_area)} "
-                               f"{config.interface_config['Main']['QuestionDelete']}").strip()
-            if user_input == 'y' or user_input == '\n':
+            # user_input = input(f"{area_num.pop()}{str(watermark_area)} "
+            #                    f"{config.interface_config['Main']['QuestionDelete']}").strip()
+            # if user_input == 'y' or user_input == '\n':
+            if args.delete_subarea == 'y':
                 with open(self.raw_subtitle_path, mode='r+', encoding='utf-8') as f:
                     content = f.readlines()
                     f.seek(0)
@@ -549,8 +551,9 @@ class SubtitleExtractor:
         cv2.imwrite(sample_frame_file_path, sample_frame)
         print(f"{config.interface_config['Main']['CheckSubArea']} {sample_frame_file_path}")
 
-        user_input = input(f"{(ymin, ymax)} {config.interface_config['Main']['DeleteNoSubArea']}").strip()
-        if user_input == 'y' or user_input == '\n':
+        # user_input = input(f"{(ymin, ymax)} {config.interface_config['Main']['DeleteNoSubArea']}").strip()
+        # if user_input == 'y' or user_input == '\n':
+        if args.delete_no_subarea == 'y':
             with open(self.raw_subtitle_path, mode='r+', encoding='utf-8') as f:
                 content = f.readlines()
                 f.seek(0)
@@ -673,6 +676,7 @@ class SubtitleExtractor:
         :return 返回字幕的区域位置
         """
         # 打开去水印区域处理过的raw txt
+        print(self.raw_subtitle_path)
         f = open(self.raw_subtitle_path, mode='r', encoding='utf-8')  # 打开txt文件，以‘utf-8’编码读取
         line = f.readline()  # 以行的形式进行读取文件
         # y坐标点列表
@@ -1008,6 +1012,7 @@ if __name__ == '__main__':
     multiprocessing.set_start_method("spawn")
     importlib.reload(config)
     args = utility.parse_args()
+    print(args)
 
     # 提示用户输入视频路径
     # video_path = input(f"{config.interface_config['Main']['InputVideo']}").strip()
